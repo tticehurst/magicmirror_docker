@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+  magicmirror:
+    image: magic
+    container_name: magic_container
+    restart: always
+
+    ports:
+      - 8080:8080
+      - 8081:8081
+
+    volumes:
+      - ./config:/opt/magic_mirror/config
+      - ./images:/opt/magic_mirror/modules/hosted_images
