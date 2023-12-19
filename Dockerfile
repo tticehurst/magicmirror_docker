@@ -35,7 +35,7 @@ WORKDIR /opt/magic_mirror
 
 RUN git clone --depth 1 -b ${branch} https://github.com/MichMich/MagicMirror.git .
 
-RUN npm install --unsafe-perm --silent
+RUN npm install --unsafe-perm
 
 RUN set -e; \
     modules=" \
@@ -48,7 +48,7 @@ RUN set -e; \
     https://github.com/tticehurst/TomWeather.git\
     https://github.com/tticehurst/MMM-Xmas.git\
     https://github.com/MichMich/MMM-Snow.git\
-    https://github.com/sticehurst369/MMM-CalendarExtMinimonth.git\
+    https://github.com/MMM-CalendarExt2/MMM-CalendarExtMinimonth.git\
     https://github.com/cbrooker/MMM-Todoist.git\
     https://github.com/timdows/MMM-JsonTable.git\
     "; \
@@ -56,7 +56,7 @@ RUN set -e; \
     module_name=$(basename $module .git); \
     git clone $module modules/$module_name; \
     if [ -d "modules/$module_name" ]; then \
-    find modules/$module_name -type f -name "package.json" -exec sh -c 'cd $(dirname "{}") && npm install --unsafe-perm --silent' \;; \
+    find modules/$module_name -type f -name "package.json" -exec sh -c 'cd $(dirname "{}") && npm install --unsafe-perm ' \;; \
     fi; \
     done
 

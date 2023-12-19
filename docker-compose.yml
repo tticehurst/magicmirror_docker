@@ -13,3 +13,4 @@ services:
     volumes:
       - ./config:/opt/magic_mirror/config
       - ./images:/opt/magic_mirror/modules/hosted_images
+      - ./css/custom.css:/opt/magic_mirror/css/custom.css

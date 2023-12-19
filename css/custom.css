@@ -1,0 +1,4 @@
+/* calendar mini view - make it a bit smaller */
+#CXMM {
+    --base-size: 11px;
+}
