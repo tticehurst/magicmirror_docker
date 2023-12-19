@@ -48,7 +48,7 @@ RUN set -e; \
     https://github.com/tticehurst/TomWeather.git\
     https://github.com/tticehurst/MMM-Xmas.git\
     https://github.com/MichMich/MMM-Snow.git\
-    https://github.com/MMM-CalendarExt2/MMM-CalendarExtMinimonth.git\
+    https://github.com/sticehurst369/MMM-CalendarExtMinimonth.git\
     https://github.com/cbrooker/MMM-Todoist.git\
     https://github.com/timdows/MMM-JsonTable.git\
     "; \
