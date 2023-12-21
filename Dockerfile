@@ -46,7 +46,7 @@ RUN set -e; \
     https://github.com/tticehurst/MMM-EasyPix.git\
     https://github.com/tticehurst/MMM-CalendarExt.git\
     https://github.com/tticehurst/TomWeather.git\
-    https://github.com/tticehurst/MMM-Xmas.git\
+    https://github.com/cowboysdude/MMM-Xmas.git\
     https://github.com/MichMich/MMM-Snow.git\
     https://github.com/MMM-CalendarExt2/MMM-CalendarExtMinimonth.git\
     https://github.com/cbrooker/MMM-Todoist.git\
@@ -56,7 +56,7 @@ RUN set -e; \
     module_name=$(basename $module .git); \
     git clone $module modules/$module_name; \
     if [ -d "modules/$module_name" ]; then \
-    find modules/$module_name -type f -name "package.json" -exec sh -c 'cd $(dirname "{}") && npm install --unsafe-perm ' \;; \
+    find modules/$module_name -type f -name "package.json" -exec sh -c 'cd $(dirname "{}") && npm install --unsafe-perm && npm audit fix ' \;; \
     fi; \
     done
 

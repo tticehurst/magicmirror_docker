@@ -1,4 +1,10 @@
 /* calendar mini view - make it a bit smaller */
 #CXMM {
-    --base-size: 11px;
+  --base-size: 11px;
+}
+
+/* Christmas lights move to left so no gap */
+.strand {
+  width: 150%;
+  margin-left: -11.75rem;
 }
