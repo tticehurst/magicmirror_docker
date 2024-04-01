@@ -44,7 +44,8 @@ RUN set -e; \
     https://github.com/tticehurst/MMM-NewClock.git\
     https://github.com/tticehurst/MMM-TrainTimesRTT.git\
     https://github.com/tticehurst/MMM-EasyPix.git\
-    https://github.com/tticehurst/MMM-CalendarExt.git\
+    https://github.com/tticehurst/MMM-CalendarDisplayMonthOverview.git\
+    https://github.com/tticehurst/MMM-CalendarDisplay.git\
     https://github.com/tticehurst/TomWeather.git\
     https://github.com/cowboysdude/MMM-Xmas.git\
     https://github.com/MichMich/MMM-Snow.git\
