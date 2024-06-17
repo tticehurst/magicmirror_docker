@@ -2,7 +2,7 @@ FROM node:21.4
 
 RUN set -e; \
     apt update; \
-    apt install -y gettext openssh-server; \
+    apt install -y vim gettext openssh-server; \
     rm -rf /var/lib/apt/lists/*
 
 
@@ -52,6 +52,7 @@ RUN set -e; \
     https://github.com/MMM-CalendarExt2/MMM-CalendarExtMinimonth.git\
     https://github.com/cbrooker/MMM-Todoist.git\
     https://github.com/timdows/MMM-JsonTable.git\
+    https://github.com/lavolp3/MMM-MyCommute.git\
     "; \
     for module in $modules; do \
     module_name=$(basename $module .git); \
