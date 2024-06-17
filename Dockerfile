@@ -37,29 +37,14 @@ RUN git clone --depth 1 -b ${branch} https://github.com/MichMich/MagicMirror.git
 
 RUN npm install --unsafe-perm
 
+COPY modules.txt /tmp/modules.txt
 RUN set -e; \
-    modules=" \
-    https://github.com/tticehurst/MMMessages.git\
-    https://github.com/tticehurst/MMM-SimplePowerGeneration.git\
-    https://github.com/tticehurst/MMM-NewClock.git\
-    https://github.com/tticehurst/MMM-TrainTimesRTT.git\
-    https://github.com/tticehurst/MMM-EasyPix.git\
-    https://github.com/tticehurst/MMM-CalendarDisplayMonthOverview.git\
-    https://github.com/tticehurst/MMM-CalendarDisplay.git\
-    https://github.com/tticehurst/TomWeather.git\
-    https://github.com/cowboysdude/MMM-Xmas.git\
-    https://github.com/MichMich/MMM-Snow.git\
-    https://github.com/MMM-CalendarExt2/MMM-CalendarExtMinimonth.git\
-    https://github.com/cbrooker/MMM-Todoist.git\
-    https://github.com/timdows/MMM-JsonTable.git\
-    https://github.com/lavolp3/MMM-MyCommute.git\
-    "; \
-    for module in $modules; do \
-    module_name=$(basename $module .git); \
-    git clone $module modules/$module_name; \
-    if [ -d "modules/$module_name" ]; then \
-    find modules/$module_name -type f -name "package.json" -exec sh -c 'cd $(dirname "{}") && npm install --unsafe-perm && npm audit fix ' \;; \
-    fi; \
+    cat /tmp/modules.txt | while read module; do\
+        module_name=$(basename $module .git); \
+        git clone $module modules/$module_name;\
+        if [ -d "modules/$module_name" ]; then \
+            find modules/$module_name -type f -name "package.json" -exec sh -c 'cd $(dirname "{}") && npm install --unsafe-perm && npm audit fix ' \;; \
+        fi; \
     done
 
 RUN rm -rf /root/.ssh
