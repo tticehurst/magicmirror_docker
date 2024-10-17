@@ -1,4 +1,4 @@
-FROM node:21.4
+FROM node:lts
 
 RUN set -e; \
     apt update; \
@@ -35,7 +35,7 @@ WORKDIR /opt/magic_mirror
 
 RUN git clone --depth 1 -b ${branch} https://github.com/MichMich/MagicMirror.git .
 
-RUN npm install --unsafe-perm
+RUN npm install --unsafe-perm 
 
 COPY modules.txt /tmp/modules.txt
 RUN set -e; \
