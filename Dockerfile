@@ -1,42 +1,35 @@
-FROM node:lts
+FROM node:22-alpine AS base
+LABEL name="MagicMirror" \
+      version="2.0" \
+      description="create image with MagicMirror and all our modules keeping ssh private key out of the final image"
 
 RUN set -e; \
-    apt update; \
-    apt install -y vim gettext openssh-server; \
-    rm -rf /var/lib/apt/lists/*
+    apk update; \
+    apk add --no-cache git openssh-client openssh-server; \
+    rm -rf /var/cache/apk/*
 
 
-ARG branch=master
 
-COPY ./github-keys/* /root/.ssh/
 
-RUN set -e; \
-    echo "# SSH Config for GitHub Accounts" > /root/.ssh/config \
-    && for keyfile in /root/.ssh/*; do \
-    [ -f "$keyfile" ] && [ "$(basename "$keyfile")" != "config" ] && \
-    keyname=$(basename "$keyfile") && \
-    echo "Host github.com" >> /root/.ssh/config \
-    && echo "  HostName github.com" >> /root/.ssh/config \
-    && echo "  User git" >> /root/.ssh/config \
-    && echo "  IdentityFile /root/.ssh/$keyname" >> /root/.ssh/config \
-    && echo "  PreferredAuthentications publickey" >> /root/.ssh/config;\
-    done
+
+
+# build modules
+FROM base as builder
+ARG SSH_PRIVATE_KEY
+RUN mkdir -p /root/.ssh && \
+    echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa && \
+    chmod 600 /root/.ssh/id_rsa
 
 RUN set -e; \
     touch /root/.ssh/known_hosts\
     && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
-
-RUN set -e;\
-    chmod 600 /root/.ssh/*
-
 ENV NODE_ENV production
+ARG branch=master
 WORKDIR /opt/magic_mirror
 
 RUN git clone --depth 1 -b ${branch} https://github.com/MichMich/MagicMirror.git .
-
 RUN npm install --unsafe-perm
-
 RUN set -e; \
     modules=" \
     https://github.com/tticehurst/MMMessages.git\
@@ -62,8 +55,17 @@ RUN set -e; \
     find modules/$module_name -type f -name "package.json" -exec sh -c 'cd $(dirname "{}") && npm install --unsafe-perm && npm audit fix ' \;; \
     fi; \
     done
-
 RUN rm -rf /root/.ssh
+
+
+
+
+
+
+# build final image, copying over built modules
+FROM base
+WORKDIR /opt/magic_mirror
+COPY --from=builder /opt/magic_mirror .
 
 EXPOSE 8080
 EXPOSE 8081
