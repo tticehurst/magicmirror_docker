@@ -1,0 +1,3 @@
+these images are hard links
+
+ sudo ln /opt/heatmap/out/worldNow.png /home/magicmirror/docker/images/worldNow.png

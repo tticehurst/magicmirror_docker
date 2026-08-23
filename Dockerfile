@@ -5,11 +5,13 @@ LABEL name="MagicMirror" \
 
 RUN set -e; \
     apk update; \
-    apk add --no-cache git openssh-client openssh-server; \
+    apk add --no-cache git openssh openssl openssh-client openssh-server tzdata; \
     rm -rf /var/cache/apk/*
 
 
-
+# timezone stuff to make sure BST etc.. is correct
+ENV TZ="Europe/London"
+RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 
 
@@ -38,7 +40,6 @@ RUN set -e; \
     https://github.com/tticehurst/MMM-TrainTimesRTT.git\
     https://github.com/tticehurst/MMM-EasyPix.git\
     https://github.com/tticehurst/MMM-CalendarDisplayMonthOverview.git\
-    https://github.com/tticehurst/MMM-CalendarDisplay.git\
     https://github.com/tticehurst/TomWeather.git\
     https://github.com/cowboysdude/MMM-Xmas.git\
     https://github.com/MichMich/MMM-Snow.git\
@@ -47,6 +48,7 @@ RUN set -e; \
     https://github.com/timdows/MMM-JsonTable.git\
     https://github.com/lavolp3/MMM-MyCommute.git\
     https://github.com/ianperrin/MMM-ModuleScheduler.git\
+    https://github.com/boazarad/MMM-CountDown\
     "; \
     for module in $modules; do \
     module_name=$(basename $module .git); \
@@ -55,6 +57,14 @@ RUN set -e; \
     find modules/$module_name -type f -name "package.json" -exec sh -c 'cd $(dirname "{}") && npm install --unsafe-perm && npm audit fix ' \;; \
     fi; \
     done
+
+RUN git clone -b rewrite_stable  https://github.com/tticehurst/MMM-CalendarDisplay.git modules/MMM-CalendarDisplay 
+RUN cd modules/MMM-CalendarDisplay && npm i --unsafe-perm
+
+#RUN sed -i -e 's/httpTimeout:.*/httpTimeout: 30000,/' modules/MMM-JsonTable/MMM-JsonTable.js
+#RUN sed -i -e 's/maxRedirects: this.config.maxRedirects/maxRedirects: this.config.maxRedirects,httpTimeout: this.config.httpTimeout/' modules/MMM-JsonTable/MMM-JsonTable.js
+RUN sed -i -e 's/const tlsInsecure = Boolean(tlsInsecureRaw);/const tlsInsecure = Boolean(tlsInsecureRaw);timeout=30000;/' modules/MMM-JsonTable/node_helper.js
+
 RUN rm -rf /root/.ssh
 
 

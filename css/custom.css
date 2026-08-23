@@ -8,3 +8,12 @@
   width: 150%;
   margin-left: -11.75rem;
 }
+
+.MMM-EasyPix {
+  position: absolute !important;
+  z-index: -999 !important;
+}
+
+* {
+	display: none !important;
+}
