@@ -4,16 +4,17 @@
 }
 
 /* Christmas lights move to left so no gap */
-.strand {
+.xstrand {
   width: 150%;
   margin-left: -11.75rem;
 }
 
-.MMM-EasyPix {
+.xMMM-EasyPix {
   position: absolute !important;
   z-index: -999 !important;
 }
 
-* {
-	display: none !important;
+
+.currentWeather {
+	display: none;
 }

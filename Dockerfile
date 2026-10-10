@@ -46,10 +46,9 @@ RUN set -e; \
     https://github.com/MMM-CalendarExt2/MMM-CalendarExtMinimonth.git\
     https://github.com/cbrooker/MMM-Todoist.git\
     https://github.com/timdows/MMM-JsonTable.git\
-    https://github.com/lavolp3/MMM-MyCommute.git\
     https://github.com/ianperrin/MMM-ModuleScheduler.git\
     https://github.com/boazarad/MMM-CountDown\
-    "; \
+    https://github.com/mykle1/MMM-WeatherOrNot.git";\
     for module in $modules; do \
     module_name=$(basename $module .git); \
     git clone $module modules/$module_name; \
@@ -61,10 +60,10 @@ RUN set -e; \
 RUN git clone -b rewrite_stable  https://github.com/tticehurst/MMM-CalendarDisplay.git modules/MMM-CalendarDisplay 
 RUN cd modules/MMM-CalendarDisplay && npm i --unsafe-perm
 
-#RUN sed -i -e 's/httpTimeout:.*/httpTimeout: 30000,/' modules/MMM-JsonTable/MMM-JsonTable.js
-#RUN sed -i -e 's/maxRedirects: this.config.maxRedirects/maxRedirects: this.config.maxRedirects,httpTimeout: this.config.httpTimeout/' modules/MMM-JsonTable/MMM-JsonTable.js
 RUN sed -i -e 's/const tlsInsecure = Boolean(tlsInsecureRaw);/const tlsInsecure = Boolean(tlsInsecureRaw);timeout=30000;/' modules/MMM-JsonTable/node_helper.js
-
+RUN sed -i \
+    's|<a class="weatherwidget-io"|<a class="weatherwidget-io" data-mode="Forecast"|g' \
+    modules/MMM-WeatherOrNot/MMM-WeatherOrNot.js
 RUN rm -rf /root/.ssh
 
 
