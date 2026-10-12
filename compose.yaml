@@ -3,6 +3,7 @@ services:
   magicmirror:
     image: magic
     container_name: magic_container
+    init: true
     restart: always
 
     environment:
